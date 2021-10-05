@@ -1,0 +1,34 @@
+﻿Scenario Modify or upgrade chaincode
+
+
+Domains & Competencies
+Application Lifecycle Management 20% 
+Modify or upgrade chaincode
+
+
+Lesson to be learned: 
+To upgrade chaincode you MUST install the version you are upgrading to 
+
+
+Scenario Tasks: 
+Upgrade the default byfn go chaincode to version version55.5 
+
+
+Variables/Arguments needed: 
+chaincode name: "mycc"
+initialize args:  ["init","a","999","b","888"]
+version: version55.5
+
+peer chaincode install -n mycc -v version55.5 -p github.com/chaincode/chaincode_example02/go/
+
+peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v version55.5 -c '{"Args":["init","a","999","b","888"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')"
+
+Links:
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/channel_update_tutorial.html#prepare-the-cli-environment
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/channel_update_tutorial.html#upgrade-and-invoke-chaincode
+
+
+
+
+Notes:
+When you upgrade an existing chaincode you will immediately replace the existing chaincode upon the transaction committed.

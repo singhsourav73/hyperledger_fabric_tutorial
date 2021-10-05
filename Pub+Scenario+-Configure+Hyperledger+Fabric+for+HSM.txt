@@ -1,0 +1,32 @@
+﻿Scenario Configure Hyperledger Fabric for HSM
+Domains & Competencies 
+Membership Service Provider 20%
+Configure Hyperledger Fabric for hardware security module
+Diagnostics and Troubleshooting 15%
+Query and analyse CA logs
+
+
+Lesson to be learned: 
+* On Fabric CA scenarios make sure you jump over to the right documentation link https://hyperledger-fabric-ca.readthedocs.io/en/release-1.4/
+* edit the fabric-ca-server-config.yaml file to configure HSM
+
+
+Scenario Tasks: 
+* Configure the CA server to store private keys in a HSM via PKCS11.
+* Restart the service and validate HSM is operational
+
+
+Variables/Arguments needed 
+Fabric CA files are in folder /usr/local/bin/
+A token has been created and labelled= Tolkien 
+The PIN for the token has been set to 18921973
+PKCS11 (softhsm) is installed at path: /usr/local/lib/softhsm/libsofthsm2.so
+service name per lab setup: fabric-ca-server.service
+
+
+Links:
+https://hyperledger-fabric-ca.readthedocs.io/en/release-1.4/users-guide.html#configuring-an-hsm
+
+
+Notes: 
+By default, the Fabric CA server and client store private keys in a PEM-encoded file, but they can also be configured to store private keys in an HSM (Hardware Security Module) via PKCS11 APIs. This behavior is configured in the BCCSP (BlockChain Crypto Service Provider) section of the server’s or client’s configuration file. Currently, Fabric only supports the PKCS11 standard to communicate with an HSM.

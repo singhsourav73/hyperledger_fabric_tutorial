@@ -1,0 +1,31 @@
+﻿Scenario Instantiate then Install Chaincode 
+Domains & Competencies 
+Application Lifecycle Management 20% 
+Install and Instantiate chaincode package
+
+
+Diagnostics and Troubleshooting 15%
+Query and analyze peer logs
+
+
+Lesson to be learned: You need to install chaincode before instantiating it on a channel.
+
+
+Scenario Tasks: 
+Task: instantiate a go chaincode  
+Task:  Troubleshoot then fix
+
+
+Variables/Arguments needed
+peer: peer0.org1.com (default peer on cli container)
+version: v2021
+name: notinstalledyet
+chaincode path: github.com/chaincode/chaincode_example02/go/
+channel name: mychannel
+init args: ["init","a","2020","b","2021"]
+
+
+Notes:
+Applications in a Hyperledger Fabric network  interact with the blockchain ledger through chaincode.  
+Chaincode is installed onto peer nodes and instantiated to one or more channels.
+all Chaincode is is software code that's invoked by a client application

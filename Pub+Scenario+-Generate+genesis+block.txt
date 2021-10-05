@@ -1,0 +1,58 @@
+﻿Scenario Generate genesis block
+Domains & Competencies 
+Install and Configure Network 25 % 
+Generate genesis block
+Configure Ordering service 
+
+
+Lesson to be learned: 
+Among other things, the configtxgen tool consumes a file called configtx.yaml and outputs a genesis block for channels using profiles.
+The orderer has its own config file
+
+
+Scenario Tasks: 
+In the configtx.yaml file rename the profile SampleDevModeKafka to "YourNewProfile"  
+
+
+Output a genesis block to  ./channel-artifacts/MyGenesis.block with the "YourNewProfile" profile. 
+
+
+Configure orderer to be launched with your new genesis block by editing the orderer's config file 
+
+
+Variables/Arguments needed 
+location: ..fabric-samples/first-network/configtx.yaml 
+location: ..fabric-samples/config/orderer.yaml 
+new profile: YourNewProfile
+
+../bin/configtxgen -profile YourNewProfile -channelID byfn-sys-channel -outputBlock ./channel-artifacts/MyGenesis.block
+
+Links:
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/configtx.html
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/build_network.html?highlight=SampleDevModeKafka#manually-generate-the-artifacts
+
+
+Notes:
+
+
+The configtxgen tool is used to create the block
+it  consumes a file - configtx.yaml - that contains the definitions for the sample network. 
+This file also specifies a sample consortium consisting of two Peer Orgs. 
+The SampleDevModeKafka profile within the yaml file generates the genesis block for a Kafka ordering service. 
+
+
+The first block of a newly created channel is known as a “genesis block”. 
+If this genesis block is being created as part of the creation of a new network (in other words, if the orderer being created will not be joined to an existing cluster of orderers), then this genesis block will be the first block of the “orderer system channel” (also known as the “ordering system channel”), a special channel managed by the orderer admins which includes a list of the organizations permitted to create channels. 
+
+
+The genesis block of the orderer system channel is special: it must be created and included in the configuration of the node before the node can be started.
+
+
+The configuration of the orderer is handled through a yaml filed called orderer.yaml. 
+
+
+The FABRIC_CFG_PATH environment variable is used to point to an orderer.yaml file you’ve configured, which will extract a series of files and certificates on your file system.
+
+
+Within this file there is also the GenesisMethod — the method by which the genesis block is created. 
+This can be either file, in which the file in the GenesisFile is specified, and provisional, in which the profile in GenesisProfile is used.

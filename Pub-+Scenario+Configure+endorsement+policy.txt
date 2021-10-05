@@ -1,0 +1,30 @@
+﻿Scenario Configure endorsement policy
+Domains & Competencies -
+Application Lifecycle Management
+Configure endorsement policy
+
+
+Lesson to be learned: Access control defaults exist inside configtx.yaml, the file that configtxgen uses to build channel configurations. 
+the configtx.yaml file is located at /root/fabric-samples/first-network/ in our lab
+
+
+Scenario Tasks: 
+Task: configure all the channels within the network to require ANY Admins to write
+Task: Start the network afterwards
+
+
+Variables/Arguments needed: 
+
+
+Links:
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/access_control.html#updating-acl-defaults-in-configtx-yaml
+
+
+Notes: 
+Fabric uses access control lists or ACLs to manage access to resources by associating a policy — which specifies a rule that evaluates to true or false, given a set of identities — with the resource. 
+
+
+Fabric contains a number of default ACLs. In this scenario, we’ll look at how they’re formatted and how the defaults can be overridden.
+
+
+Policies are fundamental to the way Fabric works because they allow the identity (or set of identities) associated with a request to be checked against the policy associated with the resource needed to fulfill the request. Endorsement policies are used to determine whether a transaction has been appropriately endorsed.

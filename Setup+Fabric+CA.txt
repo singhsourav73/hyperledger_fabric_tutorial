@@ -1,0 +1,184 @@
+﻿Lab Setting Up Hyperledger Fabric Certificate Authority 
+
+
+Install Fabric CA
+apt-get update
+apt install libtool libltdl-dev make
+
+
+mkdir ~/go && cd ~/go && mkdir src && cd src && mkdir github.com && cd github.com && mkdir hyperledger && cd hyperledger
+
+
+git clone https://github.com/hyperledger/fabric-ca
+cd fabric-ca/
+GO_TAGS=pkcs11 make fabric-ca-server
+make fabric-ca-client
+
+
+Environment variable:
+vim ~/.profile 
+export SOFTHSM2_CONF=/etc/softhsm2.conf
+export PATH=$PATH:~/go/src/github.com/hyperledger/fabric-ca/bin
+source ~/.profile 
+
+
+Test:
+cli> fabric-ca-server <enter>
+
+
+mkdir /usr/local/bin/fabricwork
+mkdir  /usr/local/bin/fabricwork/server
+mkdir /usr/local/bin/fabricwork/client
+mkdir /var/log/fabricserver
+touch /var/log/fabricserver/fabca.log
+
+
+Create the systemd Service File:
+cat > fabric-ca-server.service << EOF
+[Unit]
+Description=Hyperledger Fabric ca server service
+After=network.target
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/usr/local/bin/
+ExecStart=/bin/sh -c "/root/go/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-server start -b admin:adminpw >> /var/log/fabricserver/fabca.log 2>&1"
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target ~
+EOF
+
+
+mv fabric-ca-server.service /lib/systemd/system/
+systemctl enable fabric-ca-server.service  
+systemctl start fabric-ca-server.service
+systemctl status fabric-ca-server.service
+
+
+INSTALL SOFTHSM
+apt-get install build-essential
+apt-get install openssl automake autoconf libtool libssl-dev
+
+
+git clone https://github.com/opendnssec/SoftHSMv2.git
+cd SoftHSMv2/
+sh autogen.sh
+
+
+./configure
+make
+make install 
+softhsm2-util --init-token --slot 0 --label "Tolkien"
+- enter so and user pin 18921973
+(* don't forget export SOFTHSM2_CONF=/etc/softhsm2.conf)
+
+
+Troubleshooting:
+systemctl status fabric-ca-server.service 
+systemctl start fabric-ca-server.service
+systemctl stop fabric-ca-server.service
+
+
+Reference Links:
+https://wiki.opendnssec.org/display/SoftHSMDOCS/SoftHSM+Documentation+v2#SoftHSMDocumentationv2-Dependencies
+https://linuxconfig.org/how-to-install-g-the-c-compiler-on-ubuntu-18-04-bionic-beaver-linux
+
+
+
+
+Pre-existing variables
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+
+Other:
+export FABRIC_CA_HOME=/usr/local/bin/fabricwork
+export FABRIC_CA_SERVER_HOME=$FABRIC_CA_HOME/server
+export FABRIC_CA_CLIENT_HOME=$FABRIC_CA_HOME/client
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EXTRAS: 
+
+
+Remove go if needed:
+root@ip-172-31-39-245:~# cd /usr/local/
+root@ip-172-31-39-245:/usr/local# ls
+bin  etc  games  go  include  lib  man  sbin  share  src
+root@ip-172-31-39-245:/usr/local# rm -rf go/
+root@ip-172-31-39-245:/usr/local# cd ~
+root@ip-172-31-39-245:~# tar -C /usr/local -xzf go1.13.15.linux-amd64.tar.gz 
+root@ip-172-31-39-245:~# go version
+go version go1.13.15 linux/amd64
+
+
+get fabric:
+curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.8 1.4.8 0.4.15
+
+
+
+
+Remove services if needed:
+systemctl stop fabric-ca-server.service
+systemctl disable fabric-ca-server.service
+rm /etc/systemd/system/fabric-ca-server.service
+rm /etc/systemd/system/fabric-ca-server.service 
+rm /usr/lib/systemd/system/fabric-ca-server.service 
+rm /usr/lib/systemd/system/fabric-ca-server.service 
+systemctl daemon-reload
+systemctl reset-failed

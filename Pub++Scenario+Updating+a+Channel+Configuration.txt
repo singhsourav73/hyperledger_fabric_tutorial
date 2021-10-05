@@ -1,0 +1,39 @@
+﻿Scenario Updating a Channel Configuration
+
+
+Domains & Competencies
+Network Maintenance and Operations 20%
+Update channel configuration
+
+
+Lesson to be learned: 
+Updating a config is a process of:
+* pulling the config
+* translating into a format that humans can read
+* modifying it and then submitting it for approval.
+
+
+
+Scenario Tasks: 
+Task: set the maximum message count of Batch size to 14 by modifying the channel config 
+
+
+Variables/Arguments needed: 
+
+
+Links:
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/channel_update_tutorial.html
+https://hyperledger-fabric.readthedocs.io/en/release-1.4/config_update.html
+
+
+
+
+
+
+
+This configuration is stored on the ledger in a block, and is therefore known as a configuration (config) block. 
+
+
+CORE_PEER_LOCALMSPID="OrdererMSP"
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp
